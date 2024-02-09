@@ -10,17 +10,34 @@ curl -X POST -H "Authorization: Bearer $(gcloud auth print-access-token)" \
     -d '{"query":"Give me your best guess","pageSize":10,"queryExpansionSpec":{"condition":"AUTO"},"spellCorrectionSpec":{"mode":"AUTO"},"contentSearchSpec":{"summarySpec":{"summaryResultCount":5,"ignoreAdversarialQuery":true,"includeCitations":true},"snippetSpec":{"returnSnippet":true},"extractiveContentSpec":{"maxExtractiveAnswerCount":1}}}'
 ```
 
-## Getting Started
+## Authenticating with Google Cloud APIs
 
-Ensure you have set `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to your service account key file.  See this [guide](https://cloud.google.com/docs/authentication/getting-started) for more details.
+We are going to use the GCP [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials) which provides an easy abstraction to authenticate with GCP APIs.  When running locally it will look for an environment variable named `GOOGLE_APPLICATION_CREDENTIALS` which contains the path to a JSON file with your GCP credentials.  When you deploy to GCP (i.e. Cloud Run, GKE, GCE, etc...) the SDK will automatically authenticate using the metadata server, so you don't have to pass in any credentials.
 
-Set project and datastore values in `appsettings.Development.json`.
+Use these [instructions](https://cloud.google.com/docs/authentication/application-default-credentials#personal) to generate your credentials file.  For example on linux follow these steps:
+
+```bash
+gcloud auth application-default login 
+
+export GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.json
+```
+
+## Running the Sample
+
+Set project and datastore values in `appsettings.Development.json`, for example
+```json
+{
+  "ProjectId": "MyGcpProject1234",
+  "DataStoreId": "MyDataStore-1234"
+}
+```
 
 Run the app in development mode to read those settings with:
 ```bash
 DOTNET_ENVIRONMENT=Development dotnet run
 ```
 
+## Notes
 ### Prerelease Google SDK Packages
 This application is using a pre-release version of the Google.Cloud.DiscoveryEngine APIs, specfivially `1.0.0-beta09`.  To install a pre-release version of the APIs, run:
 
