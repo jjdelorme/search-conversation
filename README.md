@@ -1,3 +1,15 @@
+# Discovery Engine Sample
+The Google .NET SDK includes classes for interacting with the Vertex Search & Converation.  The API is in the DiscoveryEngine library and is discoverable from within the GCP Console through the **Integration** tab:
+
+![gcp console](gcp-console-vertex.png)
+
+```bash
+curl -X POST -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: application/json" \
+    "https://discoveryengine.googleapis.com/v1alpha/projects/xxxxxxx/locations/global/collections/default_collection/dataStores/yyyyy/servingConfigs/default_search:search" \
+    -d '{"query":"Give me your best guess","pageSize":10,"queryExpansionSpec":{"condition":"AUTO"},"spellCorrectionSpec":{"mode":"AUTO"},"contentSearchSpec":{"summarySpec":{"summaryResultCount":5,"ignoreAdversarialQuery":true,"includeCitations":true},"snippetSpec":{"returnSnippet":true},"extractiveContentSpec":{"maxExtractiveAnswerCount":1}}}'
+```
+
 ## Getting Started
 
 Ensure you have set `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to your service account key file.  See this [guide](https://cloud.google.com/docs/authentication/getting-started) for more details.
